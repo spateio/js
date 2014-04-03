@@ -57,6 +57,7 @@ window.Gorealtime = (function(app_id, verbose) {
 
     self.off = function(channel) {
         delete callbackRegistry[channel];
+        self.unsubscribe(channel);
     }
 
     self.subscribe = function() {
