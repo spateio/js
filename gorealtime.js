@@ -21,7 +21,7 @@ window.Gorealtime = (function(app_id, verbose) {
             } else if (message.type == 'disconnect') {
                 self.log('Instructed to disconnect', message.reason);
 
-                self.socket.close()
+                self.socket.close();
                 if (message.reconnect) {
                     setTimeout(connect, 5000);
                 }
@@ -43,7 +43,7 @@ window.Gorealtime = (function(app_id, verbose) {
         if (window.console && verbose) {
             console.log(arguments);
         }
-    }
+    };
 
     self.on = function(channel, cb) {
         // first subscribe to the channel if we're not already
@@ -58,7 +58,7 @@ window.Gorealtime = (function(app_id, verbose) {
     self.off = function(channel) {
         delete callbackRegistry[channel];
         self.unsubscribe(channel);
-    }
+    };
 
     self.subscribe = function() {
         self.socket.send(JSON.stringify({
