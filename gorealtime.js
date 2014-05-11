@@ -2,7 +2,7 @@ window.Gorealtime = (function(app_id, verbose) {
     "use strict";
 
     verbose = verbose === true;
-    var WS_URL = 'ws://localhost:9000/';
+    var WS_URL = 'ws://ws.gorealti.me:9000/';
     var callbackRegistry = {};
     var self = {
         socket: null
@@ -61,9 +61,19 @@ window.Gorealtime = (function(app_id, verbose) {
     };
 
     self.subscribe = function() {
+        // subscribe expects each channel to be a string, passed as an arg
+        var channels = channelsFromArgs(arguments);
+        if (self.socket.readyState !== self.socket.OPEN) {
+            // queue the channel subscriptions
+            self.socket.addEventListener('open', function() {
+                self.subscribe.apply(this, channels);
+            });
+            return;
+        }
+
         self.socket.send(JSON.stringify({
             type: 'subscribe',
-            channels: channelsFromArgs(arguments)
+            channels: channels
         }));
         return true;
     };
