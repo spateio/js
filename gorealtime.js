@@ -39,6 +39,30 @@ window.Gorealtime = (function(app_id, verbose) {
         return channels;
     };
 
+    var subscribe = function(channel) {
+        if (self.socket.readyState !== self.socket.OPEN) {
+            // queue the channel subscriptions
+            self.socket.addEventListener('open', function() {
+                subscribe.apply(this, [channel]);
+            });
+            return;
+        }
+
+        self.socket.send(JSON.stringify({
+            type: 'subscribe',
+            channels: [channel]
+        }));
+        return true;
+    };
+
+    var unsubscribe = function(channel) {
+        self.socket.send(JSON.stringify({
+            type: 'unsubscribe',
+            channels: [channel]
+        }));
+        return true;
+    };
+
     self.log = function() {
         if (window.console && verbose) {
             console.log(arguments);
@@ -48,7 +72,7 @@ window.Gorealtime = (function(app_id, verbose) {
     self.on = function(channel, cb) {
         // first subscribe to the channel if we're not already
         if (!callbackRegistry.hasOwnProperty(channel)) {
-            self.subscribe(channel);
+            subscribe(channel);
         }
 
         // add the callback to the registry
@@ -57,33 +81,7 @@ window.Gorealtime = (function(app_id, verbose) {
 
     self.off = function(channel) {
         delete callbackRegistry[channel];
-        self.unsubscribe(channel);
-    };
-
-    self.subscribe = function() {
-        // subscribe expects each channel to be a string, passed as an arg
-        var channels = channelsFromArgs(arguments);
-        if (self.socket.readyState !== self.socket.OPEN) {
-            // queue the channel subscriptions
-            self.socket.addEventListener('open', function() {
-                self.subscribe.apply(this, channels);
-            });
-            return;
-        }
-
-        self.socket.send(JSON.stringify({
-            type: 'subscribe',
-            channels: channels
-        }));
-        return true;
-    };
-
-    self.unsubscribe = function() {
-        self.socket.send(JSON.stringify({
-            type: 'unsubscribe',
-            channels: channelsFromArgs(arguments)
-        }));
-        return true;
+        unsubscribe(channel);
     };
 
     connect();
