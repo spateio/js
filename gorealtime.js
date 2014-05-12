@@ -2,7 +2,7 @@ window.Gorealtime = (function(app_id, verbose) {
     "use strict";
 
     verbose = verbose === true;
-    var WS_URL = 'ws://ws.gorealti.me:9000/';
+    var WS_URL = 'wss://ws.gorealti.me:9000/';
     var callbackRegistry = {};
     var self = {
         socket: null
