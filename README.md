@@ -1,3 +1,3 @@
-# Gorealtime-JS
+# spate.js
 
-[Docs](http://docs.gorealtime.io/en/latest/js/index.html)
+[Docs](http://docs.spate.io/en/latest/js/index.html)
