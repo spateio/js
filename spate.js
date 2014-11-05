@@ -2,7 +2,7 @@ window.Spate = (function(app_id, verbose) {
     "use strict";
 
     verbose = verbose === true;
-    var WS_URL = 'wss://ws.spate:9000/';
+    var WS_URL = 'wss://ws.spate.io:9000/';
     var callbackRegistry = {};
     var self = {
         socket: null
