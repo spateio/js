@@ -1,6 +1,6 @@
 .PHONY: jshint
 
-SOURCES=gorealtime.js
+SOURCES=spate.js
 
 all: jshint concat
 
@@ -8,4 +8,4 @@ jshint:
 	jshint $(SOURCES)
 
 concat:
-	uglifyjs $(SOURCES) -o gorealtime.min.js
+	uglifyjs $(SOURCES) -o spate.min.js
